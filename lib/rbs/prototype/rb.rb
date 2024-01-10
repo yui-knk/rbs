@@ -465,6 +465,8 @@ module RBS
           node.children[0] if node.children[0].is_a?(Symbol)
         when :STR
           node.children[0].to_sym
+        when :SYM
+          node.children[0]
         end
       end
 
@@ -592,6 +594,8 @@ module RBS
           lit = node.children[0]
           type_name = TypeName.new(name: lit.class.name.to_sym, namespace: Namespace.root)
           Types::ClassInstance.new(name: type_name, args: [], location: nil)
+        when :SYM
+          Types::Literal.new(literal: node.children[0], location: nil)
         when :LIT
           lit = node.children[0]
           case lit
@@ -718,6 +722,8 @@ module RBS
           else
             default
           end
+        when :SYM
+          BuiltinNames::Symbol.instance_type
         when :STR, :DSTR
           BuiltinNames::String.instance_type
         when :NIL

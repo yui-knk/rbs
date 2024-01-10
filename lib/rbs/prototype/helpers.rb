@@ -109,7 +109,7 @@ module RBS
       def keyword_hash?(node)
         if node && node.type == :HASH
           node.children[0].children.compact.each_slice(2).all? {|key, _|
-            key.type == :LIT && key.children[0].is_a?(Symbol)
+            (key.type == :LIT && key.children[0].is_a?(Symbol)) || key.type == :SYM
           }
         else
           false
